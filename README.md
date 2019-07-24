@@ -17,4 +17,4 @@ Materialize - Framework
 ## Author 
 Ahmed Chebli
 
-https://github.com/Soliperso/friend-finder
+https://safe-ridge-31078.herokuapp.com/
