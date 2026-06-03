@@ -5,6 +5,9 @@ var path = require('path');
 var app = express();
 var PORT = process.env.PORT || 3000;
 
+// Pretty-print JSON responses so the API is readable in a browser
+app.set('json spaces', 2);
+
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

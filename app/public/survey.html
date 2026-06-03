@@ -1,230 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
 
 <head>
-    <meta charset="UTF-8">
-    <!-- materialize -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <!-- materialize icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-    <title>Friend Finder - Survey</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friend Finder — Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg-1: #6a11cb;
+      --bg-2: #2575fc;
+      --bg-3: #ff5f9e;
+      --glass: rgba(255, 255, 255, 0.12);
+      --glass-strong: rgba(255, 255, 255, 0.2);
+      --border: rgba(255, 255, 255, 0.28);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.78);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+      --accent: #2b1066;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 36px 18px 60px;
+      background: linear-gradient(-45deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-2));
+      background-size: 400% 400%;
+      animation: gradientShift 16s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: var(--shadow);
+    }
+
+    .wrap { width: 100%; max-width: 720px; margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .back {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.92rem;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+    }
+    .back:hover { opacity: 0.65; }
+
+    .header {
+      text-align: center;
+      border-radius: 24px;
+      padding: 30px 26px;
+      margin-bottom: 20px;
+      animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
+      letter-spacing: -0.02em;
+    }
+    .header p { color: var(--muted); margin-top: 8px; font-size: 0.98rem; }
+
+    .card {
+      border-radius: 22px;
+      padding: 26px 24px;
+      margin-bottom: 18px;
+      animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label.fl {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      font-family: inherit;
+      font-size: 1rem;
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.1);
+      transition: border 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.55); }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
+    }
+
+    .q { margin-bottom: 22px; }
+    .q:last-child { margin-bottom: 0; }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .q-num {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      margin-right: 8px;
+    }
+
+    .scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .scale input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .scale label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 12px 0;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.08);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      user-select: none;
+      transition: transform 0.15s ease, background 0.2s ease, border 0.2s ease;
+    }
+    .scale label:hover { background: rgba(255, 255, 255, 0.16); transform: translateY(-2px); }
+    .scale input:checked + label {
+      background: linear-gradient(135deg, #ffffff, #f0e9ff);
+      color: var(--accent);
+      border-color: #fff;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .scale-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .actions { text-align: center; margin-top: 6px; }
+
+    .submit {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--accent);
+      border: none;
+      cursor: pointer;
+      padding: 16px 44px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffffff, #f0e9ff);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .submit:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32); }
+    .submit:active { transform: translateY(-1px) scale(0.99); }
+
+    .error {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(255, 70, 90, 0.22);
+      border: 1px solid rgba(255, 120, 135, 0.6);
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .error.show { display: block; animation: rise 0.3s ease both; }
+
+    .footer-links {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .footer-links a { color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.4); }
+    .footer-links a:hover { opacity: 0.7; }
+    .footer-links .dot { margin: 0 10px; opacity: 0.5; }
+
+    /* Modal */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(15, 5, 40, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 50;
+    }
+    .overlay.show { display: flex; animation: fade 0.25s ease both; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 26px;
+      padding: 34px 30px;
+      text-align: center;
+      animation: pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes pop {
+      from { opacity: 0; transform: scale(0.9) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal .eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .modal h2 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .modal img {
+      width: 170px;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .modal .match-name {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      margin: 18px 0 24px;
+    }
+    .modal .done {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+      border: none;
+      cursor: pointer;
+      padding: 13px 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffffff, #f0e9ff);
+      transition: transform 0.2s ease;
+    }
+    .modal .done:hover { transform: translateY(-2px); }
+
+    @media (max-width: 520px) {
+      .card { padding: 22px 18px; }
+      .scale label { padding: 11px 0; font-size: 0.95rem; }
+    }
+  </style>
 </head>
 
 <body>
-    <div class='container'>
-        <div class='card-panel #1e88e5 blue darken-1  col s12 center-align'>
-            <h4><strong>Survey Questions</strong></h4>
-            <div class='card-panel left-align white'>
-                <h5><strong>About You</strong></h5>
-                <br>
-                <input id="name" type="text" class="validate" required>
-                <label class='active' for="name">Name (required)</label>
-                <input id="photo" type="text" class="validate" required>
-                <label class='active' for="name">Link to Photo Image (required)</label>
-                <h5><strong>Question 1</strong></h5>
-                <p>I see myself as extroverted, enthusiastic.</p>
-                <select data-placeholder="" class="browser-default" id="q1">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 2</strong></h5>
-                <p>I see myself as critical, quarrelsome.</p>
-                <select data-placeholder="" class="browser-default" id="q2">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 3</strong></h5>
-                <p>I see myself as dependable, self-disciplined.</p>
-                <select data-placeholder="" class="browser-default" id="q3">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 4</strong></h5>
-                <p>I see myself as anxious, easily upset.</p>
-                <select data-placeholder="" class="browser-default" id="q4">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 5</strong></h5>
-                <p>I see myself as open to new experiences.</p>
-                <select data-placeholder="" class="browser-default" id="q5">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 6</strong></h5>
-                <p>I see myself as reserved, quiet</p>
-                <select data-placeholder="" class="browser-default" id="q6">
-                    <option value="">Choose an Option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 7</strong></h5>
-                <p>I see myself as sympathetic.</p>
-                <select data-placeholder="" class="browser-default" id="q7">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 8</strong></h5>
-                <p>I see myself as disorganized.</p>
-                <select data-placeholder="" class="browser-default" id="q8">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 9</strong></h5>
-                <p>I see myself as calm, emotionally stable.</p>
-                <select data-placeholder="" class="browser-default" id="q9">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <h5><strong>Question 10</strong></h5>
-                <p>I see myself as practical, conventional.</p>
-                <select data-placeholder="" class="browser-default" id="q10">
-                    <option value="">Choose an option</option>
-                    <option value="1">1 (Strongly Disagree)</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (Strongly Agree)</option>
-                </select>
-                <br>
-                <!-- Materialize Modal Trigger/Submit Button -->
-                <button type ="submit" data-target="modal1" class="waves-effect waves-light btn modal-trigger blue lighten-1" id="submitBtn">Submit</button>
-            </div>
-        </div>
-        <div class='col s4'>
-            <p><a href='/api/friends'>API Friends List</a> | <a href='https://github.com/Soliperso/friend-finder' target='_blank'>GitHub Repo</a></p>
-        </div>
+  <div class="wrap">
+    <div class="topbar">
+      <a class="back" href="/">← Home</a>
+      <span class="back" style="opacity:.6;">🤝 Friend Finder</span>
+    </div>
 
-        <!-- Materialize Modal Structure -->
-        <div id="modal1" class="modal">
-          <div class="modal-content">
-            <h4>Meet Your New BFF</h4>
-            <h5 id="matchName"></h5>
-            <img id="matchPic" src="" alt="No Image" width = 250px>
-          </div>
-        <div class="modal-footer">
-          <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Done</a>
+    <div class="header glass">
+      <h1>Personality Survey</h1>
+      <p>Rate each statement from 1 (strongly disagree) to 5 (strongly agree).</p>
+    </div>
+
+    <form id="surveyForm" novalidate>
+      <!-- About you -->
+      <div class="card glass">
+        <div class="section-title">👤 About you</div>
+        <div class="field">
+          <label class="fl" for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label class="fl" for="photo">Link to photo image</label>
+          <input id="photo" type="text" placeholder="https://example.com/your-photo.jpg" autocomplete="url" />
         </div>
       </div>
 
+      <!-- Questions -->
+      <div class="card glass" id="questionsCard">
+        <div class="section-title">🧠 Tell us about yourself</div>
+        <!-- questions injected here -->
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="submit" id="submitBtn">Find My Match ✨</button>
+        <div class="error" id="error">Please fill out your name, photo link, and all 10 questions before submitting.</div>
+      </div>
+    </form>
+
+    <div class="footer-links">
+      <a href="/friends">Browse Friends</a>
+      <span class="dot">•</span>
+      <a href="https://github.com/Soliperso/friend-finder" target="_blank" rel="noopener">GitHub Repo</a>
     </div>
+  </div>
 
-<!-- Grabs information and sends it to server -->
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#submitBtn").on("click", function() {
-        //form validation
-        function validateForm() {
-            var isValid = true;
-            $('.validate').each(function() {
-                if ($(this).val() === ''){
-                    isValid = false;
-                }
-            });
+  <!-- Result modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal glass">
+      <div class="eyebrow">Meet your new BFF</div>
+      <h2>🎉 It's a match!</h2>
+      <img id="matchPic" src="" alt="Your match" />
+      <div class="match-name" id="matchName"></div>
+      <button class="done" id="doneBtn" type="button">Done</button>
+    </div>
+  </div>
 
-            $('.browser-default').each(function() {
-                if ($(this).val() === ""){
-                    isValid = false;
-                }
-            });
+  <script>
+    // The 10 personality statements (order matters: maps to scores[0..9]).
+    var QUESTIONS = [
+      "I see myself as extroverted, enthusiastic.",
+      "I see myself as critical, quarrelsome.",
+      "I see myself as dependable, self-disciplined.",
+      "I see myself as anxious, easily upset.",
+      "I see myself as open to new experiences.",
+      "I see myself as reserved, quiet.",
+      "I see myself as sympathetic, warm.",
+      "I see myself as disorganized, careless.",
+      "I see myself as calm, emotionally stable.",
+      "I see myself as practical, conventional."
+    ];
 
-            return isValid;
+    // Build the question UI as 1-5 segmented pill controls.
+    (function buildQuestions() {
+      var container = document.getElementById('questionsCard');
+      QUESTIONS.forEach(function (text, i) {
+        var n = i + 1;
+        var q = document.createElement('div');
+        q.className = 'q';
+
+        var p = document.createElement('div');
+        p.className = 'q-text';
+        p.innerHTML = '<span class="q-num">' + n + '.</span>' + text;
+        q.appendChild(p);
+
+        var scale = document.createElement('div');
+        scale.className = 'scale';
+        for (var v = 1; v <= 5; v++) {
+          var id = 'q' + n + '_' + v;
+          var input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'q' + n;
+          input.id = id;
+          input.value = String(v);
+          var label = document.createElement('label');
+          label.setAttribute('for', id);
+          label.textContent = v;
+          scale.appendChild(input);
+          scale.appendChild(label);
         }
+        q.appendChild(scale);
 
-        //if everything is filled
-        if (validateForm() == true) {
-            //creates a new friend from the values submitted
-            var newFriend = {
-                name: $('#name').val().trim(),
-                profilePic: $('#photo').val().trim(),
-                scores: [
-                    $('#q1').val(),
-                    $('#q2').val(),
-                    $('#q3').val(),
-                    $('#q4').val(),
-                    $('#q5').val(),
-                    $('#q6').val(),
-                    $('#q7').val(),
-                    $('#q8').val(),
-                    $('#q9').val(),
-                    $('#q10').val(),
-                ]
-            };
+        var legend = document.createElement('div');
+        legend.className = 'scale-legend';
+        legend.innerHTML = '<span>Strongly disagree</span><span>Strongly agree</span>';
+        q.appendChild(legend);
 
-            //Grabs current URL of website
-            var currentURL = window.location.origin;
+        container.appendChild(q);
+      });
+    })();
 
-            //AJAX posts the data to friends API.
-            $.post(currentURL + "/api/friends", newFriend, function(data) {
-                //Grab the result from the AJAX post so that the best match's name and photo are displayed.
-                $("#matchName").text(data.name);
-                $("#matchPic").attr("src", data.profilePic);
+    var form = document.getElementById('surveyForm');
+    var errorBox = document.getElementById('error');
+    var overlay = document.getElementById('overlay');
 
-            });
-            // Show the modal with the best match
-                $('.modal').modal();
+    function getScore(n) {
+      var checked = document.querySelector('input[name="q' + n + '"]:checked');
+      return checked ? checked.value : '';
+    }
 
-            //clear form after submission
-            $('#name').val("");
-            $('#photo').val("");
-            $('#q1').val("");
-            $('#q2').val("");
-            $('#q3').val("");
-            $('#q4').val("");
-            $('#q5').val("");
-            $('#q6').val("");
-            $('#q7').val("");
-            $('#q8').val("");
-            $('#q9').val("");
-            $('#q10').val("");
-        } else {
-            alert("Please fill out ALL fields before submitting the survey!")
-        }
+    function closeModal() { overlay.classList.remove('show'); }
+
+    document.getElementById('doneBtn').addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
     });
-});
-</script>
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var name = document.getElementById('name').value.trim();
+      var photo = document.getElementById('photo').value.trim();
+      var scores = [];
+      var allAnswered = true;
+      for (var n = 1; n <= 10; n++) {
+        var s = getScore(n);
+        if (s === '') allAnswered = false;
+        scores.push(s);
+      }
+
+      if (!name || !photo || !allAnswered) {
+        errorBox.classList.add('show');
+        return;
+      }
+      errorBox.classList.remove('show');
+
+      var newFriend = { name: name, profilePic: photo, scores: scores };
+
+      fetch('/api/friends', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newFriend)
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          document.getElementById('matchName').textContent = data.name;
+          var pic = document.getElementById('matchPic');
+          pic.src = data.profilePic;
+          pic.onerror = function () {
+            this.onerror = null;
+            this.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+              '<svg xmlns="http://www.w3.org/2000/svg" width="170" height="170"><rect width="100%" height="100%" fill="rgba(255,255,255,0.15)"/><text x="50%" y="52%" font-size="60" text-anchor="middle" dominant-baseline="middle">🙂</text></svg>'
+            );
+          };
+          overlay.classList.add('show');
+          form.reset();
+        })
+        .catch(function () {
+          errorBox.textContent = 'Something went wrong finding your match. Please try again.';
+          errorBox.classList.add('show');
+        });
+    });
+  </script>
 </body>
 
 </html>
